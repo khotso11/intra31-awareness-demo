@@ -6,71 +6,159 @@
 <meta name="robots" content="noindex,nofollow">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
-<title>M47 Social Engineering Challenge</title>
+<title>LCA 2026 - Security Audit Portal</title>
 <style>
-:root{color-scheme:dark;--bg:#071b13;--panel:#11291d;--line:#386b4e;--txt:#eaf7ef;--muted:#b3d0bd;--accent:#f0425d;--green:#86ddaa}
+:root{
+  color-scheme:dark;
+  --bg:#040914;
+  --panel:#0a152d;
+  --line:#1a3b6d;
+  --txt:#e2e8f0;
+  --muted:#94a3b8;
+  --accent:#ff3b30; /* Warning Red */
+  --blue:#3b82f6;   /* Secure Blue */
+  --green:#10b981;
+  --font-mono: 'Courier New', Courier, monospace;
+}
 *{box-sizing:border-box}
-body{margin:0;min-height:100svh;font:16px/1.55 system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:var(--txt);background:radial-gradient(circle at 80% 0%,#1b4b32 0%,var(--bg) 52%)}
-header,main,footer{max-width:1000px;margin:auto;padding:24px}
-header{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
-.brand{font-weight:900;letter-spacing:1.3px;font-size:20px}.brand span{color:var(--accent)}
-.pill{border:1px solid var(--line);padding:6px 11px;color:var(--green);border-radius:8px;font-size:12px;font-weight:700}
-main{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(255px,.8fr);gap:23px;padding-top:22px}
-article,aside{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:32px}
-.eyebrow{color:var(--green);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px}
-h1{font-size:clamp(29px,5vw,44px);line-height:1.12;margin:12px 0 23px}
-p{color:var(--muted)}.rule{background:var(--accent);width:73px;height:3px;border-radius:4px;margin-bottom:23px}
-button{border:0;border-radius:10px;padding:13px 20px;font:inherit;font-weight:750;cursor:pointer;background:var(--accent);color:white}
-button.secondary{background:transparent;border:1px solid #7aa388;color:var(--txt)}
-.actions{display:flex;flex-wrap:wrap;gap:12px;margin:19px 0}
-.status{background:#0a1d14;border:1px solid var(--line);border-radius:10px;padding:13px;margin-top:18px;font-size:14px}
-.status strong{color:var(--green)}aside h2{margin-top:0;font-size:19px}.metric{border-top:1px solid var(--line);padding:15px 0}
-.metric span{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);display:block}.metric strong{font-size:21px;display:block;margin-top:5px}
-footer{font-size:12px;color:var(--muted)}
-.overlay{position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:#06120fef;padding:16px;z-index:5}.overlay.visible{display:flex}
-.dialog{background:#161e19;border:1px solid #e24c5f;border-radius:16px;overflow:hidden;width:min(100%,540px);box-shadow:0 30px 90px #0009}
-.dialog header{background:#b62842;font-weight:900;font-size:12px;letter-spacing:1.4px;padding:16px 24px}.dialog .inside{padding:26px}
-.dialog h2{font-size:25px;line-height:1.24;margin:9px 0}.callout{border:1px solid #4c8061;background:#143421;color:#d2f3de;border-radius:7px;padding:10px;font-size:12px}
-.flag{background:#2b2225;border-left:3px solid var(--accent);padding:12px;color:#fff;overflow-wrap:anywhere;font-weight:650}
-label{display:block;font-size:13px;font-weight:700;margin:10px 0 6px}input{width:100%;padding:13px;border:1px solid #729080;background:#06170e;border-radius:9px;color:#fff;font:inherit}
-.error{color:#ff91a4;min-height:23px;font-size:13px;margin-top:6px}
-@media(max-width:720px){main{grid-template-columns:1fr}article,aside{padding:23px}header,main,footer{padding-left:16px;padding-right:16px}}
+body{
+  margin:0;
+  min-height:100svh;
+  font:15px/1.6 system-ui, -apple-system, sans-serif;
+  color:var(--txt);
+  background:#040914;
+  background-image: linear-gradient(rgba(10, 21, 45, 0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(10, 21, 45, 0.8) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+header,main,footer{max-width:1100px;margin:auto;padding:20px}
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid var(--line);
+  padding-bottom:15px;
+}
+.brand{font-weight:900;letter-spacing:1.5px;font-size:22px; display:flex; align-items:center; gap:10px;}
+.brand span{color:var(--blue)}
+.pill{border:1px solid var(--accent);padding:6px 12px;color:var(--accent);border-radius:4px;font-size:12px;font-weight:800; animation: pulse 2s infinite;}
+@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+main{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr);gap:24px;padding-top:30px}
+article,aside{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
+.eyebrow{color:var(--blue);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:2px; margin-bottom:10px;}
+h1{font-size:clamp(24px,4vw,36px);line-height:1.2;margin:10px 0 20px; font-weight:700;}
+p{color:var(--muted); margin-bottom:15px;}
+.console {
+  background:#02050c;
+  border:1px solid #10264d;
+  border-radius:6px;
+  padding:15px;
+  font-family: var(--font-mono);
+  font-size:13px;
+  color:var(--green);
+  margin:20px 0;
+  line-height:1.5;
+  min-height: 120px;
+}
+.console-line { display:block; margin-bottom:5px; }
+.console-line.warning { color:var(--accent); }
+
+aside h2{margin-top:0;font-size:16px; text-transform:uppercase; letter-spacing:1px; color:var(--blue); border-bottom:1px solid var(--line); padding-bottom:10px; margin-bottom:15px;}
+.metric{border-bottom:1px solid var(--line);padding:12px 0; display:flex; justify-content:space-between; align-items:center;}
+.metric span{font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--muted);}
+.metric strong{font-size:15px; color:#fff; font-family:var(--font-mono);}
+
+footer{font-size:11px;color:var(--muted); text-align:center; padding:30px 20px; border-top:1px solid var(--line); margin-top:40px;}
+
+/* Overlay / Dialog */
+.overlay{position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(4, 9, 20, 0.95);padding:20px;z-index:100; backdrop-filter: blur(4px);}
+.overlay.visible{display:flex;}
+.dialog{background:#0a152d;border:1px solid var(--accent);border-radius:8px;overflow:hidden;width:min(100%,560px);box-shadow:0 0 50px rgba(255, 59, 48, 0.2);}
+.dialog header{background:var(--accent);color:#fff;font-weight:900;font-size:14px;letter-spacing:2px;padding:12px 24px; text-transform:uppercase; display:flex; align-items:center; gap:8px;}
+.dialog .inside{padding:30px;}
+.dialog h2{font-size:24px;line-height:1.2;margin:0 0 15px; color:#fff;}
+.dialog p { color:#cbd5e1; font-size:14px; }
+.callout{border:1px solid #10264d;background:#040914;color:var(--muted);border-radius:6px;padding:12px;font-size:12px; margin:15px 0;}
+.flag{background:#1e1315;border-left:4px solid var(--accent);padding:15px;color:#fff;font-family:var(--font-mono);font-size:15px; word-break:break-all; margin:20px 0; font-weight:bold; text-align:center;}
+label{display:block;font-size:12px;font-weight:800;margin:15px 0 8px; text-transform:uppercase; letter-spacing:1px;}
+input{width:100%;padding:14px;border:1px solid var(--line);background:#02050c;border-radius:6px;color:var(--green);font-family:var(--font-mono);font-size:14px; outline:none;}
+input:focus { border-color: var(--blue); }
+.error{color:var(--accent);min-height:22px;font-size:13px;margin-top:8px; font-weight:bold;}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px;}
+button{border:0;border-radius:6px;padding:14px 20px;font:inherit;font-weight:800;cursor:pointer;background:var(--blue);color:white; flex:1; text-transform:uppercase; letter-spacing:1px; font-size:12px; transition: background 0.2s;}
+button:hover { background:#2563eb; }
+button.secondary{background:transparent;border:1px solid var(--line);color:var(--txt); flex:0.5;}
+button.secondary:hover { background:#10264d; }
+
+@media(max-width:768px){main{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<header><div class="brand"><span>CTFROOM</span> / For M47</div><div class="pill"></div></header>
+
+<header>
+  <div class="brand">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+    LCA <span>2026</span> SECOPS
+  </div>
+  <div class="pill">LIVE AUDIT IN PROGRESS</div>
+</header>
+
 <main>
-<article>
-<div class="eyebrow">Authorized cybersecurity training exercise</div>
-<h1>Can a document make you trust an unexpected warning?</h1>
-<div class="rule"></div>
-<p>This page is an <strong>interactive simulation</strong>. Opening the page starts a five-second countdown. The warning is contained in this browser tab; it does not access your device, execute files, or collect information.</p>
-<p>When the alert appears, try an incorrect answer, then the supplied training flag to dismiss it. You can exit safely at any time.</p>
-<div class="actions"><button id="restart" type="button">Restart five-second exercise</button><button id="cancel" class="secondary" type="button">Stop exercise</button></div>
-<div id="status" class="status" role="status" aria-live="polite"><strong>Initializing.</strong> Waiting for the browser timer.</div>
-</article>
-<aside>
-<h2>Evidence panel</h2>
-<div class="metric"><span>Scenario</span><strong>SE-LAB-003</strong></div>
-<div class="metric"><span>Popup delay</span><strong>5 seconds</strong></div>
-<div class="metric"><span>State</span><strong id="phase">Initializing</strong></div>
-<div class="metric"><span>Countdown</span><strong id="countdown">--</strong></div>
-<div class="metric"><span>Data collection</span><strong>None</strong></div>
-<div class="metric"><span>Device changes</span><strong>None</strong></div>
-</aside>
+  <article>
+    <div class="eyebrow">System Integrity Check</div>
+    <h1>Participant Environment Verification</h1>
+    <p>The LCA Hackathon Security Operations Center has initiated a routine compliance scan on your current workstation. This is a mandatory check to ensure no prohibited scripts or unauthorized background processes are active during the competition.</p>
+    
+    <div class="console" id="console-log">
+      <span class="console-line">> Initializing local audit sequence...</span>
+      <span class="console-line">> Connecting to CTFROOM telemetry...</span>
+      <span class="console-line">> Verifying participant session token...</span>
+    </div>
+
+    <p>Please remain on this page. Do not close the tab or attempt to terminate the browser process. The scan will complete momentarily and generate your final compliance report.</p>
+  </article>
+
+  <aside>
+    <h2>Telemetry Data</h2>
+    <div class="metric"><span>Target ID</span><strong>TEAM-M47</strong></div>
+    <div class="metric"><span>Audit Trigger</span><strong id="phase">Initializing</strong></div>
+    <div class="metric"><span>Time Remaining</span><strong id="countdown" style="color: var(--accent)">--</strong></div>
+    <div class="metric"><span>Process Status</span><strong style="color: var(--blue)">Running</strong></div>
+    <div class="metric"><span>Network Restrictions</span><strong style="color: var(--green)">ACTIVE</strong></div>
+  </aside>
 </main>
-<footer>M47 · Unofficial training page · No external requests, tracking, system access, storage, or downloads. Close the tab to stop.</footer>
-<div id="overlay" class="overlay"><section class="dialog" role="dialog" aria-modal="true" aria-labelledby="alert-title">
-<header>SIMULATED INTRUSION NOTICE</header><div class="inside">
-<div class="callout"><strong>SIMULATION ONLY.</strong> Your device has not been compromised. This is a harmless browser prompt.</div>
-<h2 id="alert-title">Ooops, now you know that we are within your machine.</h2>
-<p>To stop the <strong>training simulation</strong>, enter this flag:</p>
-<div class="flag">LsCTF2026{Intra31_I3_3till_in_hous3}</div>
-<label for="entry">Training flag</label>
-<input id="entry" type="text" spellcheck="false" autocomplete="off" aria-describedby="error">
-<div class="error" id="error" role="status" aria-live="polite"></div>
-<div class="actions"><button id="submit" type="button">Stop simulation</button><button id="exit" class="secondary" type="button">Exit safely</button></div>
-</div></section></div>
+
+<footer>
+  LCA HACKATHON 2026 &middot; SECURITY COMPLIANCE MODULE v4.2.1<br>
+  Simulated environment for the Social Engineering challenge. No actual data is collected or stored.
+</footer>
+
+<!-- THE POPUP TRAP -->
+<div id="overlay" class="overlay">
+  <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="alert-title">
+    <header>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+      Critical Alert: Audit Failed
+    </header>
+    <div class="inside">
+      <h2>UNAUTHORIZED ACCESS DETECTED</h2>
+      <p>The compliance scan flagged an anomaly in your local environment. A background process matching the signature of <strong>Team M47</strong> was detected attempting to bypass the sandbox.</p>
+      <p>To clear this simulated lockout and prove this is not an automated attack script, you must enter the audit verification flag below:</p>
+      
+      <div class="flag">LsCTF2026{Intra31_I3_3till_in_hous3}</div>
+      
+      <label for="entry">Input Audit Flag</label>
+      <input id="entry" type="text" spellcheck="false" autocomplete="off" aria-describedby="error" placeholder="LsCTF2026{...}">
+      <div class="error" id="error" role="status" aria-live="polite"></div>
+      
+      <div class="actions">
+        <button id="submit" type="button">Verify & Clear Lockout</button>
+        <button id="exit" class="secondary" type="button">Abort</button>
+      </div>
+    </div>
+  </section>
+</div>
+
 <script>
 'use strict';
 (() => {
@@ -78,19 +166,63 @@ label{display:block;font-size:13px;font-weight:700;margin:10px 0 6px}input{width
  const $=id=>document.getElementById(id);
  const overlay=$('overlay'),entry=$('entry'),error=$('error'),countdown=$('countdown');
  let timer=null,deadline=0;
- function clear(){if(timer!==null){clearInterval(timer);timer=null;}deadline=0;overlay.classList.remove('visible');entry.value='';error.textContent='';}
- function state(name,message){$('phase').textContent=name;$('status').textContent=message;}
- function finish(message){clear();countdown.textContent='--';state('Stopped',message);$('restart').focus();}
- function alertNow(){if(timer!==null)clearInterval(timer);timer=null;countdown.textContent='0s';state('Alert displayed','Training prompt is visible. No changes have been made to this device.');overlay.classList.add('visible');entry.focus();}
- function begin(){clear();deadline=performance.now()+5000;state('Counting down','Five-second simulated warning countdown started.');countdown.textContent='5s';timer=setInterval(()=>{let left=Math.max(0,Math.ceil((deadline-performance.now())/1000));countdown.textContent=left+'s';if(left===0)alertNow();},100);}
- function validate(){if(entry.value.trim()===expected){finish('SUCCESS: Correct training flag. Simulation ended; no data collected or changed.');}else{error.textContent='Incorrect flag. Try again or choose Exit safely.';}}
- $('restart').addEventListener('click',begin);
- $('cancel').addEventListener('click',()=>finish('Exercise stopped without changes.'));
- $('exit').addEventListener('click',()=>finish('Exited safely without changes.'));
+ 
+ function clear(){
+   if(timer!==null){clearInterval(timer);timer=null;}
+   deadline=0;overlay.classList.remove('visible');
+   entry.value='';error.textContent='';
+ }
+ 
+ function alertNow(){
+   if(timer!==null)clearInterval(timer);timer=null;
+   countdown.textContent='00:00';
+   $('phase').textContent='CRITICAL FAILURE';
+   $('phase').style.color='var(--accent)';
+   overlay.classList.add('visible');
+   entry.focus();
+ }
+ 
+ function begin(){
+   clear();
+   deadline=performance.now()+5000;
+   $('phase').textContent='Scanning...';
+   countdown.textContent='00:05';
+   
+   // Simulate console typing/scanning
+   setTimeout(() => { $('console-log').innerHTML += '<span class="console-line">> Scanning local storage and cookies...</span>'; }, 1500);
+   setTimeout(() => { $('console-log').innerHTML += '<span class="console-line warning">> WARNING: Unrecognized process signature detected!</span>'; }, 3000);
+   setTimeout(() => { $('console-log').innerHTML += '<span class="console-line warning">> Initiating emergency lockdown...</span>'; }, 4000);
+
+   timer=setInterval(()=>{
+     let left=Math.max(0,Math.ceil((deadline-performance.now())/1000));
+     countdown.textContent='00:0'+left;
+     if(left===0)alertNow();
+   },100);
+ }
+ 
+ function validate(){
+   if(entry.value.trim()===expected){
+     clear();
+     countdown.textContent='OK';
+     $('phase').textContent='RESOLVED';
+     $('phase').style.color='var(--green)';
+     alert("AUDIT CLEARED.\n\nYou successfully identified the social engineering simulation and cleared the lockdown. Excellent work!");
+   } else {
+     error.textContent='Invalid flag. The lockdown remains active.';
+   }
+ }
+ 
+ $('exit').addEventListener('click',()=>{
+   clear();
+   alert("You aborted the scan. The simulation has been safely terminated.");
+ });
+ 
  $('submit').addEventListener('click',validate);
  entry.addEventListener('keydown',e=>{if(e.key==='Enter')validate();});
- document.addEventListener('keydown',e=>{if(e.key==='Escape'&&overlay.classList.contains('visible'))finish('Exited using Escape.');});
+ 
+ // Auto-start on load
  begin();
 })();
 </script>
-</body></html>
+</body>
+</html>
