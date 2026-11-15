@@ -3,226 +3,350 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
-<meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
-<title>LCA 2026 - Security Audit Portal</title>
+<title>Sign In | LCA</title>
 <style>
-:root{
-  color-scheme:dark;
-  --bg:#040914;
-  --panel:#0a152d;
-  --line:#1a3b6d;
-  --txt:#e2e8f0;
-  --muted:#94a3b8;
-  --accent:#ff3b30; /* Warning Red */
-  --blue:#3b82f6;   /* Secure Blue */
-  --green:#10b981;
-  --font-mono: 'Courier New', Courier, monospace;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  min-height:100svh;
-  font:15px/1.6 system-ui, -apple-system, sans-serif;
-  color:var(--txt);
-  background:#040914;
-  background-image: linear-gradient(rgba(10, 21, 45, 0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(10, 21, 45, 0.8) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
-header,main,footer{max-width:1100px;margin:auto;padding:20px}
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid var(--line);
-  padding-bottom:15px;
-}
-.brand{font-weight:900;letter-spacing:1.5px;font-size:22px; display:flex; align-items:center; gap:10px;}
-.brand span{color:var(--blue)}
-.pill{border:1px solid var(--accent);padding:6px 12px;color:var(--accent);border-radius:4px;font-size:12px;font-weight:800; animation: pulse 2s infinite;}
-@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    :root {
+        --lca-blue: #2563EB;
+        --lca-blue-dark: #1E40AF;
+        --gold: #D8A05C;
+        --text-main: #111827;
+        --text-muted: #6B7280;
+        --border: #E5E7EB;
+        --bg: #F9FAFB;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        display: flex;
+        min-height: 100vh;
+        background: white;
+    }
+    
+    /* Left Panel */
+    .left-panel {
+        flex: 1;
+        background-color: var(--lca-blue);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+        color: white;
+        text-align: center;
+    }
+    .shape-1 {
+        position: absolute;
+        top: -100px;
+        left: -100px;
+        width: 400px;
+        height: 400px;
+        background-color: var(--gold);
+        border-radius: 50%;
+        opacity: 0.8;
+    }
+    .shape-2 {
+        position: absolute;
+        bottom: -150px;
+        left: -50px;
+        width: 350px;
+        height: 350px;
+        background-color: var(--gold);
+        border-radius: 50%;
+        opacity: 0.8;
+    }
+    
+    /* Updated Logo Container */
+    .logo-container {
+        z-index: 10;
+        margin-bottom: 20px;
+        background: white;
+        border-radius: 50%;
+        width: 160px; /* Slightly larger to fit the text in the logo */
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        padding: 15px; /* Adds space around the logo inside the circle */
+    }
+    .logo-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 50%;
+    }
 
-main{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr);gap:24px;padding-top:30px}
-article,aside{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
-.eyebrow{color:var(--blue);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:2px; margin-bottom:10px;}
-h1{font-size:clamp(24px,4vw,36px);line-height:1.2;margin:10px 0 20px; font-weight:700;}
-p{color:var(--muted); margin-bottom:15px;}
-.console {
-  background:#02050c;
-  border:1px solid #10264d;
-  border-radius:6px;
-  padding:15px;
-  font-family: var(--font-mono);
-  font-size:13px;
-  color:var(--green);
-  margin:20px 0;
-  line-height:1.5;
-  min-height: 120px;
-}
-.console-line { display:block; margin-bottom:5px; }
-.console-line.warning { color:var(--accent); }
+    .left-panel h1 {
+        z-index: 10;
+        font-size: 36px;
+        margin-bottom: 15px;
+        font-family: Georgia, serif;
+    }
+    .left-panel p {
+        z-index: 10;
+        max-width: 400px;
+        font-size: 15px;
+        line-height: 1.6;
+        opacity: 0.9;
+    }
 
-aside h2{margin-top:0;font-size:16px; text-transform:uppercase; letter-spacing:1px; color:var(--blue); border-bottom:1px solid var(--line); padding-bottom:10px; margin-bottom:15px;}
-.metric{border-bottom:1px solid var(--line);padding:12px 0; display:flex; justify-content:space-between; align-items:center;}
-.metric span{font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--muted);}
-.metric strong{font-size:15px; color:#fff; font-family:var(--font-mono);}
+    /* Right Panel */
+    .right-panel {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+        background: var(--bg);
+    }
+    .login-card {
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        width: 100%;
+        max-width: 440px;
+        border: 1px solid var(--border);
+    }
+    .login-card h2 {
+        font-size: 24px;
+        color: var(--text-main);
+        margin-bottom: 20px;
+        font-family: Georgia, serif;
+    }
+    
+    /* Social Proof */
+    .social-proof {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        margin-bottom: 24px;
+        font-size: 13px;
+        color: var(--text-muted);
+    }
+    .avatars { display: flex; }
+    .avatar {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #ccc;
+        border: 2px solid white;
+        margin-left: -8px;
+    }
+    .avatar:first-child { margin-left: 0; }
+    .avatar-1 { background: url('https://i.pravatar.cc/100?img=1') center/cover; }
+    .avatar-2 { background: url('https://i.pravatar.cc/100?img=2') center/cover; }
+    .avatar-3 { background: url('https://i.pravatar.cc/100?img=3') center/cover; }
+    .avatar-4 { background: url('https://i.pravatar.cc/100?img=4') center/cover; }
 
-footer{font-size:11px;color:var(--muted); text-align:center; padding:30px 20px; border-top:1px solid var(--line); margin-top:40px;}
+    /* Form */
+    .form-group { margin-bottom: 16px; }
+    label {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 6px;
+        letter-spacing: 0.5px;
+    }
+    input[type="text"], input[type="password"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+    input[type="text"]:focus, input[type="password"]:focus {
+        border-color: var(--lca-blue);
+    }
+    .password-wrapper { position: relative; }
+    .show-btn {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #F3F4F6;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 4px 8px;
+        font-size: 12px;
+        cursor: pointer;
+    }
 
-/* Overlay / Dialog */
-.overlay{position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(4, 9, 20, 0.95);padding:20px;z-index:100; backdrop-filter: blur(4px);}
-.overlay.visible{display:flex;}
-.dialog{background:#0a152d;border:1px solid var(--accent);border-radius:8px;overflow:hidden;width:min(100%,560px);box-shadow:0 0 50px rgba(255, 59, 48, 0.2);}
-.dialog header{background:var(--accent);color:#fff;font-weight:900;font-size:14px;letter-spacing:2px;padding:12px 24px; text-transform:uppercase; display:flex; align-items:center; gap:8px;}
-.dialog .inside{padding:30px;}
-.dialog h2{font-size:24px;line-height:1.2;margin:0 0 15px; color:#fff;}
-.dialog p { color:#cbd5e1; font-size:14px; }
-.callout{border:1px solid #10264d;background:#040914;color:var(--muted);border-radius:6px;padding:12px;font-size:12px; margin:15px 0;}
-.flag{background:#1e1315;border-left:4px solid var(--accent);padding:15px;color:#fff;font-family:var(--font-mono);font-size:15px; word-break:break-all; margin:20px 0; font-weight:bold; text-align:center;}
-label{display:block;font-size:12px;font-weight:800;margin:15px 0 8px; text-transform:uppercase; letter-spacing:1px;}
-input{width:100%;padding:14px;border:1px solid var(--line);background:#02050c;border-radius:6px;color:var(--green);font-family:var(--font-mono);font-size:14px; outline:none;}
-input:focus { border-color: var(--blue); }
-.error{color:var(--accent);min-height:22px;font-size:13px;margin-top:8px; font-weight:bold;}
-.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px;}
-button{border:0;border-radius:6px;padding:14px 20px;font:inherit;font-weight:800;cursor:pointer;background:var(--blue);color:white; flex:1; text-transform:uppercase; letter-spacing:1px; font-size:12px; transition: background 0.2s;}
-button:hover { background:#2563eb; }
-button.secondary{background:transparent;border:1px solid var(--line);color:var(--txt); flex:0.5;}
-button.secondary:hover { background:#10264d; }
+    /* Cloudflare Mockup */
+    .cloudflare-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid #10B981;
+        background: #ECFDF5;
+        padding: 12px;
+        border-radius: 6px;
+        margin: 20px 0;
+    }
+    .cf-left { display: flex; align-items: center; gap: 10px; }
+    .cf-check {
+        width: 20px; height: 20px;
+        background: #10B981;
+        border-radius: 50%;
+        display: flex; justify-content: center; align-items: center;
+        color: white; font-size: 12px; font-weight: bold;
+    }
+    .cf-text { font-size: 13px; font-weight: 600; color: #065F46; }
+    .cf-logo { font-size: 11px; color: var(--text-muted); font-weight: 700; }
 
-@media(max-width:768px){main{grid-template-columns:1fr}}
+    /* Submit Button */
+    .submit-btn {
+        width: 100%;
+        background: var(--lca-blue);
+        color: white;
+        border: none;
+        padding: 14px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .submit-btn:hover { background: var(--lca-blue-dark); }
+
+    /* Footer Links */
+    .links { margin-top: 20px; font-size: 13px; }
+    .links a { color: var(--lca-blue); text-decoration: none; font-weight: 600; }
+    .links a:hover { text-decoration: underline; }
+    .import-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 15px;
+        padding: 8px 12px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        font-size: 12px;
+        color: var(--text-main);
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .powered-by {
+        margin-top: 30px;
+        text-align: center;
+        font-size: 11px;
+        color: var(--text-muted);
+        letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 768px) {
+        body { flex-direction: column; }
+        .left-panel { padding: 60px 20px; }
+        .right-panel { padding: 20px; }
+        .login-card { padding: 25px; }
+    }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="brand">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-    LCA <span>2026</span> SECOPS
-  </div>
-  <div class="pill">LIVE AUDIT IN PROGRESS</div>
-</header>
-
-<main>
-  <article>
-    <div class="eyebrow">System Integrity Check</div>
-    <h1>Participant Environment Verification</h1>
-    <p>The LCA Hackathon Security Operations Center has initiated a routine compliance scan on your current workstation. This is a mandatory check to ensure no prohibited scripts or unauthorized background processes are active during the competition.</p>
-    
-    <div class="console" id="console-log">
-      <span class="console-line">> Initializing local audit sequence...</span>
-      <span class="console-line">> Connecting to CTFROOM telemetry...</span>
-      <span class="console-line">> Verifying participant session token...</span>
+    <!-- Left Side: Branding -->
+    <div class="left-panel">
+        <div class="shape-1"></div>
+        <div class="shape-2"></div>
+        
+        <div class="logo-container">
+            <!-- Inserted the Image Here -->
+            <img src="lca-logo.png" alt="LCA Logo">
+        </div>
+        <h1>LCA</h1>
+        <p>The Lesotho Communications Authority (LCA) is the statutory national regulatory agency for the communications sector in the Kingdom of Lesotho</p>
     </div>
 
-    <p>Please remain on this page. Do not close the tab or attempt to terminate the browser process. The scan will complete momentarily and generate your final compliance report.</p>
-  </article>
+    <!-- Right Side: Login Form -->
+    <div class="right-panel">
+        <div class="login-card">
+            <h2>Welcome back</h2>
+            
+            <div class="social-proof">
+                <div class="avatars">
+                    <div class="avatar avatar-1"></div>
+                    <div class="avatar avatar-2"></div>
+                    <div class="avatar avatar-3"></div>
+                    <div class="avatar avatar-4"></div>
+                </div>
+                <span><strong>148+ members</strong> train, compete, and validate skills on LCA.</span>
+            </div>
 
-  <aside>
-    <h2>Telemetry Data</h2>
-    <div class="metric"><span>Target ID</span><strong>TEAM-M47</strong></div>
-    <div class="metric"><span>Audit Trigger</span><strong id="phase">Initializing</strong></div>
-    <div class="metric"><span>Time Remaining</span><strong id="countdown" style="color: var(--accent)">--</strong></div>
-    <div class="metric"><span>Process Status</span><strong style="color: var(--blue)">Running</strong></div>
-    <div class="metric"><span>Network Restrictions</span><strong style="color: var(--green)">ACTIVE</strong></div>
-  </aside>
-</main>
+            <form id="phish-form" onsubmit="triggerPhish(event)">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="text" placeholder="you@example.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" placeholder="••••••••" required id="password">
+                        <button type="button" class="show-btn" onclick="togglePassword()">Show</button>
+                    </div>
+                </div>
 
-<footer>
-  LCA HACKATHON 2026 &middot; SECURITY COMPLIANCE MODULE v4.2.1<br>
-  Simulated environment for the Social Engineering challenge. No actual data is collected or stored.
-</footer>
+                <!-- Cloudflare Turnstile Mockup -->
+                <div class="cloudflare-box">
+                    <div class="cf-left">
+                        <div class="cf-check">✓</div>
+                        <span class="cf-text">Success!</span>
+                    </div>
+                    <div class="cf-logo">CLOUDFLARE</div>
+                </div>
 
-<!-- THE POPUP TRAP -->
-<div id="overlay" class="overlay">
-  <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="alert-title">
-    <header>
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-      Critical Alert: Audit Failed
-    </header>
-    <div class="inside">
-      <h2>UNAUTHORIZED ACCESS DETECTED</h2>
-      <p>The compliance scan flagged an anomaly in your local environment. A background process matching the signature of <strong>Team M47</strong> was detected attempting to bypass the sandbox.</p>
-      <p>To clear this simulated lockout and prove this is not an automated attack script, you must enter the audit verification flag below:</p>
-      
-      <div class="flag">LsCTF2026{Intra31_I3_3till_in_hous3}</div>
-      
-      <label for="entry">Input Audit Flag</label>
-      <input id="entry" type="text" spellcheck="false" autocomplete="off" aria-describedby="error" placeholder="LsCTF2026{...}">
-      <div class="error" id="error" role="status" aria-live="polite"></div>
-      
-      <div class="actions">
-        <button id="submit" type="button">Verify & Clear Lockout</button>
-        <button id="exit" class="secondary" type="button">Abort</button>
-      </div>
+                <button type="submit" class="submit-btn">Sign in</button>
+            </form>
+
+            <div class="links">
+                <a href="#">Forgot password?</a>
+            </div>
+
+            <div style="margin-top: 15px; font-size: 12px; color: var(--text-muted);">
+                Have an existing CTFROOM or partner account (e.g. abc.ctfroom.com)? Import your profile to access LCA.
+            </div>
+            
+            <a href="#" class="import-btn">
+                ⬇ Import Existing Profile
+            </a>
+
+            <div class="powered-by">
+                Powered by <strong>CTFROOM</strong>
+            </div>
+        </div>
     </div>
-  </section>
-</div>
 
-<script>
-'use strict';
-(() => {
- const expected='LsCTF2026{Intra31_I3_3till_in_hous3}';
- const $=id=>document.getElementById(id);
- const overlay=$('overlay'),entry=$('entry'),error=$('error'),countdown=$('countdown');
- let timer=null,deadline=0;
- 
- function clear(){
-   if(timer!==null){clearInterval(timer);timer=null;}
-   deadline=0;overlay.classList.remove('visible');
-   entry.value='';error.textContent='';
- }
- 
- function alertNow(){
-   if(timer!==null)clearInterval(timer);timer=null;
-   countdown.textContent='00:00';
-   $('phase').textContent='CRITICAL FAILURE';
-   $('phase').style.color='var(--accent)';
-   overlay.classList.add('visible');
-   entry.focus();
- }
- 
- function begin(){
-   clear();
-   deadline=performance.now()+5000;
-   $('phase').textContent='Scanning...';
-   countdown.textContent='00:05';
-   
-   // Simulate console typing/scanning
-   setTimeout(() => { $('console-log').innerHTML += '<span class="console-line">> Scanning local storage and cookies...</span>'; }, 1500);
-   setTimeout(() => { $('console-log').innerHTML += '<span class="console-line warning">> WARNING: Unrecognized process signature detected!</span>'; }, 3000);
-   setTimeout(() => { $('console-log').innerHTML += '<span class="console-line warning">> Initiating emergency lockdown...</span>'; }, 4000);
+    <!-- The Simulation Trigger Script -->
+    <script>
+        // Toggle password visibility
+        function togglePassword() {
+            const pwd = document.getElementById('password');
+            const btn = document.querySelector('.show-btn');
+            if (pwd.type === 'password') {
+                pwd.type = 'text';
+                btn.textContent = 'Hide';
+            } else {
+                pwd.type = 'password';
+                btn.textContent = 'Show';
+            }
+        }
 
-   timer=setInterval(()=>{
-     let left=Math.max(0,Math.ceil((deadline-performance.now())/1000));
-     countdown.textContent='00:0'+left;
-     if(left===0)alertNow();
-   },100);
- }
- 
- function validate(){
-   if(entry.value.trim()===expected){
-     clear();
-     countdown.textContent='OK';
-     $('phase').textContent='RESOLVED';
-     $('phase').style.color='var(--green)';
-     alert("AUDIT CLEARED.\n\nYou successfully identified the social engineering simulation and cleared the lockdown. Excellent work!");
-   } else {
-     error.textContent='Invalid flag. The lockdown remains active.';
-   }
- }
- 
- $('exit').addEventListener('click',()=>{
-   clear();
-   alert("You aborted the scan. The simulation has been safely terminated.");
- });
- 
- $('submit').addEventListener('click',validate);
- entry.addEventListener('keydown',e=>{if(e.key==='Enter')validate();});
- 
- // Auto-start on load
- begin();
-})();
-</script>
+        // Trigger the "Gotcha" moment
+        function triggerPhish(event) {
+            event.preventDefault(); // Stop the form from actually submitting
+            
+            // Show the simulation alert
+            alert("🚨 SIMULATION SUCCESSFUL 🚨\n\nYou have just entered your credentials into a mock phishing page.\n\nThis UI was cloned by Team M47 to demonstrate how easily visual trust can be exploited in a social engineering attack.\n\nDon't worry, we didn't actually capture or store anything!");
+        }
+    </script>
 </body>
 </html>
