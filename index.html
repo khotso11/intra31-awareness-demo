@@ -22,7 +22,7 @@
         background: white;
     }
     
-    /* Left Panel (Blue) - Now takes exactly 40% of the screen */
+    /* Left Panel (Blue) - 40% width */
     .left-panel {
         flex: 0 0 40%; 
         background-color: var(--lca-blue);
@@ -36,21 +36,25 @@
         color: white;
         text-align: center;
     }
+
+    /* FIXED: Top-Right Gold Circle (Larger) */
     .shape-1 {
         position: absolute;
-        top: -100px;
-        left: -100px;
-        width: 400px;
-        height: 400px;
+        top: -180px;
+        right: -150px; /* Pushed to the right */
+        width: 550px;  /* Made larger */
+        height: 550px;
         background-color: var(--gold);
         border-radius: 50%;
         opacity: 0.8;
     }
+
+    /* FIXED: Bottom-Left Gold Circle (Smaller) */
     .shape-2 {
         position: absolute;
-        bottom: -150px;
-        left: -50px;
-        width: 350px;
+        bottom: -120px;
+        left: -120px; /* Pushed to the left */
+        width: 350px; /* Made smaller */
         height: 350px;
         background-color: var(--gold);
         border-radius: 50%;
@@ -90,7 +94,7 @@
         opacity: 0.9;
     }
 
-    /* Right Panel (White) - Takes the remaining 60% */
+    /* Right Panel (White) - 60% width */
     .right-panel {
         flex: 1;
         display: flex;
@@ -138,7 +142,7 @@
     }
     .avatar:first-child { margin-left: 0; }
     
-    /* UPDATED AVATARS */
+    /* Avatars */
     .avatar-1 { background: url('https://randomuser.me/api/portraits/men/32.jpg') center/cover; }
     .avatar-2 { background: url('https://randomuser.me/api/portraits/women/44.jpg') center/cover; }
     .avatar-3 { background: url('https://randomuser.me/api/portraits/men/85.jpg') center/cover; }
