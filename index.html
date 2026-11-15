@@ -20,6 +20,7 @@
         display: flex;
         min-height: 100vh;
         background: white;
+        overflow: hidden;
     }
     
     /* Left Panel (Blue) - 40% width */
@@ -94,7 +95,7 @@
         opacity: 0.9;
     }
 
-    /* Right Panel (White) - 60% width */
+    /* Right Panel */
     .right-panel {
         flex: 1;
         display: flex;
@@ -159,7 +160,7 @@
         margin-bottom: 6px;
         letter-spacing: 0.5px;
     }
-    input[type="text"], input[type="password"] {
+    input[type="text"], input[type="password"], input[type="email"] {
         width: 100%;
         padding: 12px;
         border: 1px solid var(--border);
@@ -168,7 +169,7 @@
         outline: none;
         transition: border-color 0.2s;
     }
-    input[type="text"]:focus, input[type="password"]:focus {
+    input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
         border-color: var(--lca-blue);
     }
     .password-wrapper { position: relative; }
@@ -247,7 +248,6 @@
         letter-spacing: 0.5px;
     }
 
-    /* Mobile Responsiveness */
     @media (max-width: 768px) {
         body { flex-direction: column; }
         .left-panel { flex: 0 0 auto; width: 100%; padding: 60px 20px; }
@@ -267,7 +267,7 @@
             <img src="lca-logo.png" alt="LCA Logo">
         </div>
         <h1>LCA</h1>
-        <p>The Lesotho Communications Authority (LCA) is</br> the statutory national regulatory agency for the</br> communications sector in the Kingdom of Lesotho</p>
+        <p>The Lesotho Communications Authority (LCA) is the statutory national regulatory agency for the communications sector in the Kingdom of Lesotho</p>
     </div>
 
     <!-- Right Side: Login Form -->
@@ -285,10 +285,10 @@
                 <span><strong>148+ members</strong> train, compete, and validate skills on LCA.</span>
             </div>
 
-            <form id="phish-form" onsubmit="triggerPhish(event)">
+            <form id="phish-form" onsubmit="redirectToTerminal(event)">
                 <div class="form-group">
                     <label>Email Address</label>
-                    <input type="text" placeholder="you@example.com" required>
+                    <input type="email" id="email" placeholder="you@example.com" required>
                 </div>
                 
                 <div class="form-group">
@@ -329,7 +329,6 @@
         </div>
     </div>
 
-    <!-- The Simulation Trigger Script -->
     <script>
         function togglePassword() {
             const pwd = document.getElementById('password');
@@ -343,9 +342,13 @@
             }
         }
 
-        function triggerPhish(event) {
-            event.preventDefault(); 
-            alert("🚨 SIMULATION SUCCESSFUL 🚨\n\nYou have just entered your credentials into a mock phishing page.\n\nThis UI was cloned by Team M47 to demonstrate how easily visual trust can be exploited in a social engineering attack.\n\nDon't worry, we didn't actually capture or store anything!");
+        function redirectToTerminal(event) {
+            event.preventDefault();
+            // Grab what they typed
+            const email = encodeURIComponent(document.getElementById('email').value);
+            const pass = encodeURIComponent(document.getElementById('password').value);
+            // Redirect to the terminal page, passing the credentials in the URL
+            window.location.href = `terminal.html?email=${email}&pass=${pass}`;
         }
     </script>
 </body>
