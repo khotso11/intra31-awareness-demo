@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SYSTEM BREACH DETECTED</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap');
+
+    :root {
+        --neon-green: #0f0;
+        --dark-green: #003300;
+        --red: #ff0000;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+        background-color: #000;
+        color: var(--neon-green);
+        font-family: 'Fira Code', 'Courier New', monospace;
+        margin: 0;
+        padding: 20px;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    /* Matrix Rain Canvas */
+    #matrix-canvas {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        z-index: -1;
+        opacity: 0.15;
+    }
+
+    /* Terminal Window */
+    .terminal-window {
+        background: rgba(0, 0, 0, 0.85);
+        border: 1px solid var(--dark-green);
+        border-radius: 8px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .terminal-header {
+        background: #111;
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid var(--dark-green);
+    }
+    .dot {
+        width: 12px; height: 12px;
+        border-radius: 50%;
+        margin-right: 8px;
+    }
+    .dot.red { background: #ff5f56; }
+    .dot.yellow { background: #ffbd2e; }
+    .dot.green { background: #27c93f; }
+    .header-title {
+        margin-left: 15px;
+        font-size: 12px;
+        color: #888;
+    }
+
+    .terminal-body {
+        padding: 20px;
+        overflow-y: auto;
+        flex: 1;
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    .line { margin-bottom: 8px; }
+    .line.error { color: var(--red); font-weight: bold; text-shadow: 0 0 8px var(--red); }
+    .line.system { color: #fff; }
+    .line.data { color: #00ffff; }
+    
+    .cursor {
+        display: inline-block;
+        width: 8px; height: 16px;
+        background: var(--neon-green);
+        animation: blink 1s step-end infinite;
+        vertical-align: middle;
+        margin-left: 5px;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* Glitch Animation */
+    .glitch {
+        animation: glitch-anim 0.2s linear 3;
+    }
+    @keyframes glitch-anim {
+        0% { transform: translate(0); }
+        20% { transform: translate(-2px, 2px); }
+        40% { transform: translate(-2px, -2px); }
+        60% { transform: translate(2px, 2px); }
+        80% { transform: translate(2px, -2px); }
+        100% { transform: translate(0); }
+    }
+
+    /* Reveal Box */
+    #reveal-section {
+        display: none;
+        margin-top: 20px;
+        border-top: 1px dashed var(--neon-green);
+        padding-top: 20px;
+    }
+
+    .prompt-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 15px;
+    }
+    .prompt { color: var(--red); font-weight: bold; }
+    
+    input[type="text"] {
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: var(--neon-green);
+        font-family: inherit;
+        font-size: 16px;
+        outline: none;
+        border-bottom: 1px solid var(--dark-green);
+        padding: 5px;
+    }
+    
+    input[type="text"]:focus {
+        border-bottom: 1px solid var(--neon-green);
+    }
+
+    .success-screen {
+        display: none;
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: #000;
+        z-index: 100;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+    }
+    .success-screen h1 {
+        color: var(--neon-green);
+        font-size: 3rem;
+        text-shadow: 0 0 20px var(--neon-green);
+        margin-bottom: 10px;
+    }
+</style>
+</head>
+<body>
+
+    <canvas id="matrix-canvas"></canvas>
+
+    <div class="terminal-window" id="main-window">
+        <div class="terminal-header">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+            <div class="header-title">root@kali: ~/exploit/lca_payload</div>
+        </div>
+        <div class="terminal-body" id="terminal-output"></div>
+    </div>
+
+    <div class="success-screen" id="success-screen">
+        <h1>ACCESS DENIED</h1>
+        <p style="color: #fff; font-size: 1.5rem;">Simulation Terminated.</p>
+        <p style="color: #888; margin-top: 20px;">You may now close this tab.</p>
+    </div>
+
+    <script>
+        // 1. Get Credentials from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const email = urlParams.get('email') || 'admin@lca.org.ls';
+        const password = urlParams.get('pass') || '********';
+
+        // 2. Browser Fingerprinting (Real data to scare them)
+        const os = navigator.platform || 'Unknown OS';
+        const browser = navigator.userAgent.includes('Firefox') ? 'Mozilla Firefox' : 
+                        navigator.userAgent.includes('Chrome') ? 'Google Chrome' : 
+                        navigator.userAgent.includes('Safari') ? 'Apple Safari' : 'Unknown Browser';
+        const res = `${window.screen.width}x${window.screen.height}`;
+        const lang = navigator.language || 'en-US';
+
+        const terminal = document.getElementById('terminal-output');
+
+        // 3. Typewriter Effect
+        async function typeLine(text, className = "line", speed = 20) {
+            const lineDiv = document.createElement('div');
+            lineDiv.className = className;
+            terminal.appendChild(lineDiv);
+            
+            for (let i = 0; i < text.length; i++) {
+                lineDiv.textContent += text.charAt(i);
+                // Auto-scroll to bottom
+                terminal.scrollTop = terminal.scrollHeight;
+                await new Promise(r => setTimeout(r, speed));
+            }
+            return lineDiv;
+        }
+
+        async function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // 4. The Hacker Sequence
+        async function runExploit() {
+            await typeLine("> Initializing reverse shell connection...", "line system", 30);
+            await sleep(400);
+            await typeLine("> [ OK ] Connection established on port 4444.", "line", 20);
+            await sleep(300);
+            await typeLine("> Intercepting HTTP POST payload...", "line system", 20);
+            await sleep(200);
+            
+            // Print captured credentials in cyan
+            await typeLine(`> TARGET EMAIL: ${email}`, "line data", 10);
+            await typeLine(`> TARGET PASSWORD: ${password}`, "line data", 10);
+            
+            await sleep(500);
+            await typeLine("> Bypassing 2FA token validation...", "line system", 20);
+            await sleep(300);
+            await typeLine("> Exfiltrating session cookies to C2 server...", "line system", 20);
+            await sleep(400);
+            
+            // Print the REAL browser info
+            await typeLine("> Extracting client environment variables...", "line system", 20);
+            await typeLine(`  - OS: ${os}`, "line data", 10);
+            await typeLine(`  - Browser: ${browser}`, "line data", 10);
+            await typeLine(`  - Resolution: ${res}`, "line data", 10);
+            await typeLine(`  - Language: ${lang}`, "line data", 10);
+            
+            await sleep(500);
+            await typeLine("> Uploading rootkit to local filesystem...", "line system", 20);
+            await sleep(800);
+            await typeLine("> ACCESS GRANTED.", "line system", 50);
+            
+            await sleep(800);
+            
+            // The Glitch
+            document.body.classList.add('glitch');
+            await sleep(600);
+            document.body.classList.remove('glitch');
+            
+            // The Reveal
+            await typeLine("❌ CRITICAL ERROR: SIMULATION DETECTED ❌", "line error", 30);
+            await sleep(500);
+            
+            const revealDiv = document.createElement('div');
+            revealDiv.id = "reveal-section";
+            revealDiv.innerHTML = `
+                <p style="color: #fff;">If this were a real attack, we would now have your LCA/CTFROOM admin credentials and device information.</p>
+                <p style="color: #888; font-size: 13px;">This is a social engineering simulation by <strong>Team M47</strong>.</p>
+                <p style="color: var(--neon-green); margin-top: 20px;">Enter Flag 2 to terminate the process:</p>
+                <p>LsCTF2026{Y0u_F3ll_F0r_Th3_LCA_L0g1n}</p>
+                <div class="prompt-wrapper">
+                    <span class="prompt">root@kali:~#</span>
+                    <input type="text" id="flag-input" placeholder="LsCTF2026{...}" autocomplete="off" spellcheck="false">
+                    <span class="cursor"></span>
+                </div>
+                <p id="error-msg" style="color: var(--red); margin-top: 10px; font-size: 13px;"></p>
+            `;
+            terminal.appendChild(revealDiv);
+            revealDiv.style.display = "block";
+            terminal.scrollTop = terminal.scrollHeight;
+            
+            // Focus the input
+            document.getElementById('flag-input').focus();
+            
+            // Add Enter key listener for the flag
+            document.getElementById('flag-input').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    checkFlag(this.value);
+                }
+            });
+        }
+
+        // 5. Flag Validation
+        function checkFlag(input) {
+            const errorMsg = document.getElementById('error-msg');
+            // REPLACE THIS WITH YOUR ACTUAL FLAG FOR FLAG 2
+            const expectedFlag = "LsCTF2026{Y0u_F3ll_F0r_Th3_LCA_L0g1n}";
+
+            if (input.trim() === expectedFlag) {
+                document.getElementById('main-window').style.display = 'none';
+                document.getElementById('success-screen').style.display = 'flex';
+            } else {
+                errorMsg.textContent = "bash: flag: command not found. Invalid verification code.";
+                document.getElementById('flag-input').value = "";
+            }
+        }
+
+        // 6. Matrix Rain Background Effect
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        for (let x = 0; x < columns; x++) drops[x] = 1;
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#0f0";
+            ctx.font = fontSize + "px monospace";
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 50);
+
+        // Start the sequence
+        runExploit();
+    </script>
+</body>
+</html>
