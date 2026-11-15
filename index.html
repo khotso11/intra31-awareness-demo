@@ -22,9 +22,9 @@
         background: white;
     }
     
-    /* Left Panel */
+    /* Left Panel (Blue) - Now takes exactly 40% of the screen */
     .left-panel {
-        flex: 1;
+        flex: 0 0 40%; 
         background-color: var(--lca-blue);
         position: relative;
         overflow: hidden;
@@ -57,19 +57,18 @@
         opacity: 0.8;
     }
     
-    /* FIXED LOGO CONTAINER - Larger circle, more padding */
     .logo-container {
         z-index: 10;
         margin-bottom: 20px;
         background: white;
         border-radius: 50%;
-        width: 230px;  /* Increased size */
-        height: 230px; /* Increased size */
+        width: 240px;  
+        height: 240px; 
         display: flex;
         align-items: center;
         justify-content: center;
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        padding: 35px; /* Increased padding pushes logo away from the curved edges */
+        padding: 35px; 
     }
     .logo-container img {
         width: 100%;
@@ -91,7 +90,7 @@
         opacity: 0.9;
     }
 
-    /* Right Panel */
+    /* Right Panel (White) - Takes the remaining 60% */
     .right-panel {
         flex: 1;
         display: flex;
@@ -244,10 +243,11 @@
         letter-spacing: 0.5px;
     }
 
+    /* Mobile Responsiveness */
     @media (max-width: 768px) {
         body { flex-direction: column; }
-        .left-panel { padding: 60px 20px; }
-        .right-panel { padding: 20px; }
+        .left-panel { flex: 0 0 auto; width: 100%; padding: 60px 20px; }
+        .right-panel { width: 100%; padding: 20px; }
         .login-card { padding: 25px; }
     }
 </style>
