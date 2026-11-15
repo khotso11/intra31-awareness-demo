@@ -155,6 +155,42 @@
         text-shadow: 0 0 20px var(--neon-green);
         margin-bottom: 10px;
     }
+
+    /* =========================================================
+       NEW ADDED CODE: ADVANCED RESPONSIVENESS (DO NOT REMOVE)
+       ========================================================= */
+    
+    /* Tablets & Small Laptops */
+    @media (max-width: 1024px) {
+        .terminal-body { font-size: 14px; }
+    }
+
+    /* Mobile Devices */
+    @media (max-width: 768px) {
+        body { padding: 10px; height: 100dvh; } /* 100dvh accounts for mobile URL bars */
+        .terminal-header { padding: 8px 12px; }
+        .header-title { font-size: 10px; margin-left: 10px; }
+        .terminal-body { padding: 15px; font-size: 13px; }
+        
+        /* Prevent text from breaking layout */
+        .line { margin-bottom: 6px; word-break: break-word; }
+        .line.error { font-size: 16px; }
+        
+        /* Stack the prompt input nicely on mobile */
+        .prompt-wrapper { flex-wrap: wrap; }
+        .prompt { font-size: 14px; }
+        input[type="text"] { font-size: 14px; width: 100%; margin-top: 5px; }
+        .cursor { display: none; } /* Hide cursor on mobile to save space */
+    }
+
+    /* Very Small Phones */
+    @media (max-width: 480px) {
+        body { padding: 5px; }
+        .terminal-body { padding: 10px; font-size: 12px; }
+        .line.error { font-size: 14px; }
+        .success-screen h1 { font-size: 2rem; }
+        .success-screen p { font-size: 1rem; }
+    }
 </style>
 </head>
 <body>
