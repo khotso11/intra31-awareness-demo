@@ -248,11 +248,46 @@
         letter-spacing: 0.5px;
     }
 
+    /* ORIGINAL MOBILE QUERY */
     @media (max-width: 768px) {
         body { flex-direction: column; }
         .left-panel { flex: 0 0 auto; width: 100%; padding: 60px 20px; }
         .right-panel { width: 100%; padding: 20px; }
         .login-card { padding: 25px; }
+    }
+
+    /* =========================================================
+       NEW ADDED CODE: ADVANCED RESPONSIVENESS (DO NOT REMOVE)
+       ========================================================= */
+    
+    /* Tablets & Small Laptops */
+    @media (max-width: 1024px) {
+        .left-panel { flex: 0 0 35%; } 
+        .login-card { max-width: 90%; }
+    }
+
+    /* Mobile Devices (Portrait) */
+    @media (max-width: 768px) {
+        body { overflow-y: auto; overflow-x: hidden; height: auto; } /* Allow scrolling */
+        .left-panel { min-height: 40vh; padding: 40px 20px; }
+        
+        /* Shrink background circles for mobile */
+        .shape-1 { width: 300px; height: 300px; top: -100px; right: -100px; }
+        .shape-2 { width: 200px; height: 200px; bottom: -80px; left: -80px; }
+        
+        /* Adjust logo and text for mobile */
+        .logo-container { width: 140px; height: 140px; padding: 25px; }
+        .left-panel h1 { font-size: 28px; }
+        .left-panel p { font-size: 13px; max-width: 90%; }
+        .login-card { padding: 30px; width: 95%; margin-top: 20px; margin-bottom: 20px; }
+    }
+
+    /* Very Small Phones */
+    @media (max-width: 480px) {
+        .login-card { padding: 20px; width: 100%; border-radius: 0; border-left: none; border-right: none;}
+        .social-proof { flex-direction: column; text-align: center; }
+        .avatars { margin-bottom: 8px; }
+        .cf-logo { display: none; } /* Hide CF logo on tiny screens to save space */
     }
 </style>
 </head>
