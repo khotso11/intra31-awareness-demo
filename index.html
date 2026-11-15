@@ -57,25 +57,25 @@
         opacity: 0.8;
     }
     
-    /* Updated Logo Container */
+    /* FIXED LOGO CONTAINER */
     .logo-container {
         z-index: 10;
         margin-bottom: 20px;
         background: white;
         border-radius: 50%;
-        width: 160px; /* Slightly larger to fit the text in the logo */
-        height: 160px;
+        width: 170px;
+        height: 170px;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        padding: 15px; /* Adds space around the logo inside the circle */
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        padding: 12px; /* Gives the logo breathing room inside the circle */
     }
     .logo-container img {
         width: 100%;
         height: 100%;
-        object-fit: contain;
-        border-radius: 50%;
+        object-fit: contain; /* Ensures the whole logo is visible without cutting off text */
+        /* Removed border-radius: 50% here so it doesn't clip the text */
     }
 
     .left-panel h1 {
@@ -139,10 +139,12 @@
         margin-left: -8px;
     }
     .avatar:first-child { margin-left: 0; }
-    .avatar-1 { background: url('https://i.pravatar.cc/100?img=1') center/cover; }
-    .avatar-2 { background: url('https://i.pravatar.cc/100?img=2') center/cover; }
-    .avatar-3 { background: url('https://i.pravatar.cc/100?img=3') center/cover; }
-    .avatar-4 { background: url('https://i.pravatar.cc/100?img=4') center/cover; }
+    
+    /* UPDATED AVATARS (Black individuals representing Lesotho) */
+    .avatar-1 { background: url('https://randomuser.me/api/portraits/men/32.jpg') center/cover; }
+    .avatar-2 { background: url('https://randomuser.me/api/portraits/women/44.jpg') center/cover; }
+    .avatar-3 { background: url('https://randomuser.me/api/portraits/men/85.jpg') center/cover; }
+    .avatar-4 { background: url('https://randomuser.me/api/portraits/women/68.jpg') center/cover; }
 
     /* Form */
     .form-group { margin-bottom: 16px; }
@@ -259,7 +261,6 @@
         <div class="shape-2"></div>
         
         <div class="logo-container">
-            <!-- Inserted the Image Here -->
             <img src="lca-logo.png" alt="LCA Logo">
         </div>
         <h1>LCA</h1>
@@ -327,7 +328,6 @@
 
     <!-- The Simulation Trigger Script -->
     <script>
-        // Toggle password visibility
         function togglePassword() {
             const pwd = document.getElementById('password');
             const btn = document.querySelector('.show-btn');
@@ -340,11 +340,8 @@
             }
         }
 
-        // Trigger the "Gotcha" moment
         function triggerPhish(event) {
-            event.preventDefault(); // Stop the form from actually submitting
-            
-            // Show the simulation alert
+            event.preventDefault(); 
             alert("🚨 SIMULATION SUCCESSFUL 🚨\n\nYou have just entered your credentials into a mock phishing page.\n\nThis UI was cloned by Team M47 to demonstrate how easily visual trust can be exploited in a social engineering attack.\n\nDon't worry, we didn't actually capture or store anything!");
         }
     </script>
